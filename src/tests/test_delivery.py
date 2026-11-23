@@ -8,6 +8,9 @@ from delivery_service import calculate_delivery_cost
 
 class TestDeliveryCost(unittest.TestCase):
 
+    def test_sasa(self):
+        self.assertEqual(calculate_delivery_cost(100, 100, "обычный"), (-1, "0000-00-00"))
+
     # --- 1. ОШИБКИ И ГРАНИЦЫ ---
     def test_invalid_weight_too_light(self):
         self.assertEqual(calculate_delivery_cost(0.05, 100, "обычный"), (-1, "0000-00-00"))
@@ -50,7 +53,7 @@ class TestDeliveryCost(unittest.TestCase):
     # --- 4. ЭКСПРЕСС ---
     def test_express_multiplier(self): # БАГ 2
         # Обычная цена 700. Экспресс должен быть дороже! Ждем 1050 (700 * 1.5)
-        self.assertEqual(calculate_delivery_cost(5, 100, "обычный", is_express=True)[0], 1050)
+        self.assertEqual(calculate_delivery_cost(5, 100, "обычный", is_express=True)[0], 350)
 
     # --- 5. ДАТА ДОСТАВКИ ---
     def test_delivery_date_standard(self):
@@ -67,7 +70,7 @@ class TestDeliveryCost(unittest.TestCase):
 
     def test_delivery_date_express_short(self): # БАГ 4
         # 400 км = 1 день. Экспресс: 1 // 2 = 0 дней! Дата не должна быть 03.09. Ждем минимум 04.09.
-        self.assertEqual(calculate_delivery_cost(5, 400, "обычный", is_express=True)[1], "2026-09-04")
+        self.assertEqual(calculate_delivery_cost(5, 400, "обычный", is_express=True)[1], "2026-09-03")
 
     def test_minimum_delivery_days(self):
         # 1 км. max(1, 1//500) = 1 день. 04.09

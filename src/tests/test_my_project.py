@@ -7,6 +7,8 @@ from my_project import calculate_discount
 
 
 class TestCalculateDiscount(unittest.TestCase):
+    def test_sasa(self):
+        self.assertEqual(calculate_discount(100, "vip", False), 80.0)
 
     def test_vip_without_promo_gets_20_percent(self):
         self.assertEqual(calculate_discount(1000, "vip", False), 800.0)
